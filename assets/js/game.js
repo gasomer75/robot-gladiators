@@ -1,34 +1,40 @@
 var playerName = window.prompt("What is your robot's name?");
-var playerHealth = 110;
-var playerAttack = 11;
+var playerHealth = 100;
+var playerAttack = 10;
 var playerMoney = 0;
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 var enemyHealth = 50;
 var enemyAttack = 12;
-
+// added to see beginning stats
 console.log(playerName + " has " + playerAttack + " attack power, " + playerHealth + " health and " + playerMoney + " dollars.");
 console.log(enemyNames + " have " + enemyAttack + " attack power and " + enemyHealth + " health.");
 
-window.alert("Welcome to Robot Gladiators!");
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return value;
+};
 
 var fight = function(enemyName) {
     while(playerHealth > 0 && enemyHealth > 0) {
 
         var promptFight = window.prompt("Would you like to  FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+        
 
         if (promptFight === "skip" || promptFight === "SKIP") {
             
             var confirmSkip = window.confirm("Are you sure you'd like to quit?");
             if (confirmSkip) {
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney - 10);
                 console.log("playerMoney ", playerMoney);
                 break;
             }
         }
+        var damage = randomNumber(playerAttack - 3, playerAttack);
 
-        enemyHealth = enemyHealth - playerAttack;
+        enemyHealth = Math.max(0, enemyHealth - damage);
         console.log(
             playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
         );
@@ -40,8 +46,9 @@ var fight = function(enemyName) {
         } else {
             window.alert(enemyName + " still has " + enemyHealth + " health left.");
         }
+            var damage = randomNumber(enemyAttack - 3, enemyAttack);
 
-            playerHealth = playerHealth - enemyAttack;
+            playerHealth = Math.max(0, playerHealth - damage);
             console.log(
                 enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
             );
@@ -56,14 +63,14 @@ var fight = function(enemyName) {
 };
 
 var startGame = function() {
-    playerHealth = 110;
-    playerAttack = 11;
-    playerMoney = 10;
+    playerHealth = 100;
+    playerAttack = 10;
+    playerMoney = 0;
     for (let i = 0; i < enemyNames.length; i++) {
         if(playerHealth > 0) {
             window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
             var pickedEnemyName = enemyNames[i];
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
             fight(pickedEnemyName);
 
             if (playerHealth > 0 && i < enemyNames.length - 1) {
@@ -82,6 +89,8 @@ var startGame = function() {
 };
 
 var endGame = function() {
+    window.alert("The game has now ended. Let's see how you did!");
+    
     if (playerHealth > 0) {
     window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".");
     }
@@ -107,6 +116,7 @@ var shop = function() {
                 window.alert("Refilling player's health by 20 for 7 dollars.");
                 playerHealth = playerHealth + 20;
                 playerMoney = playerMoney - 7; 
+                //added to view new stats
                 console.log(playerName + " now has " + playerHealth + " health left.");
                 console.log(playerName + " now has " + playerMoney + " dollars left.");
             }
@@ -120,6 +130,7 @@ var shop = function() {
                 window.alert("Upgrading player's attack by 6 for 7 dollars.");
                 playerAttack = playerAttack + 6;
                 playerMoney = playerMoney - 7;
+                //added to view new stats
                 console.log(playerName + " now has " + playerAttack + " attack power.");
                 console.log(playerName + " now has " + playerMoney + " dollars left.");
             }
@@ -127,6 +138,7 @@ var shop = function() {
                 window.alert("You don't have enough money!");
             }
             break;
+        case "LEAVE":
         case "leave":
             window.alert("Leaving the store.");
             break;
